@@ -24,4 +24,4 @@ def secure_token
   end
 end
 
-EventDeets::Application.config.secret_key_base = secure_token
+Geocoding::Application.config.secret_key_base = secure_token
