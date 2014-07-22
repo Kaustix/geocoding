@@ -1,3 +1,3 @@
 Geocoding::Application.routes.draw do
-  get "static_pages/geocodes"
+  root 'static_pages#geocodes'
 end
