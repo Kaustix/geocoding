@@ -14,5 +14,4 @@ describe "StaticPages" do
 			expect(page).to have_content('Geocode Addresses')
 		end
 	end
-
 end

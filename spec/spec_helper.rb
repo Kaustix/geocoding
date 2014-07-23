@@ -42,4 +42,5 @@ RSpec.configure do |config|
 
   #Required for rspec
   config.include Capybara::DSL
+  config.include StaticPagesHelper
 end

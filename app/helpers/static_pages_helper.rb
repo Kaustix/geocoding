@@ -1,9 +1,13 @@
-require 'smarter_csv'
-
 module StaticPagesHelper
 	def ImportCSV(filename)
 		return nil if filename.blank?
+		print filename
+		results = []
 
-		results = SmarterCSV.process(filename, options_hash)
+		File.read(filename).each_line do |line|
+			results << line.chomp
+		end
+
+		return results
 	end
 end

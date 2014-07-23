@@ -4,27 +4,40 @@ describe "StaticPagesHelper" do
 
 	describe "Geocoding Imports" do
 
-		describe "empty filepath should retun nil" do
-			let(:empty_geocodes) { helper.ImportCSV(" ") }
-			subject {empty_geocodes}
-			it { should be_nil }
+		describe "with invalid input" do
+			
+			it "should return nil with empty filepath" do
+				empty_geocodes = ImportCSV(" ")
+				empty_geocodes.should be_nil
+			end
+
+			it " should return nil with nil filepath" do
+				nil_geocodes = ImportCSV(nil) 
+				nil_geocodes.should be_nil
+			end
 		end
 
-		describe "nil filepath should retun nil" do
-			let(:nil_geocodes) { helper.ImportCSV(nil) }
-			subject {nil_geocodes}
-			it { should be_nil }
-		end
+		describe "with valid file input" do
 
-		describe "it should contain 101 Geocoded Address" do
-			let(:imported_geocodes) { helper.ImportCSV(File.join(Rails.root, 
-																 'app', 
-																 'csv', 
-																 'GeocodeAddresses.csv'))}
+			it "should contain 102 Geocoded Address" do
+				imported_geocodes = ImportCSV(File.join(Rails.root, 
+														 'app',
+														 'assets', 
+														 'csv', 
+														 'GeocodeAddresses.csv'))
 
-			subject {imported_geocodes}
+				expect(imported_geocodes.count).to be(102) 
+			end
 
-			it { should have(101).items}
+			it "should chomp newline from csv import" do
+				imported_geocodes = ImportCSV(File.join(Rails.root, 
+														 'app',
+														 'assets', 
+														 'csv', 
+														 'GeocodeAddresses.csv'))
+
+				expect(imported_geocodes[2].include?("\n")).to be_false
+			end
 		end
 
 	end
