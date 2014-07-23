@@ -38,6 +38,28 @@ describe "StaticPagesHelper" do
 
 				expect(imported_geocodes[2].include?("\n")).to be_false
 			end
+
+			it "should find RoofTop Addresses" do
+				s = GetValidJsonGeoCodedAddress()
+
+				expect(IsRoofTopAddress(s)).to be_true
+			end
+
+			it "should get Geocoded Addresses" do
+				s = GeocodeAddress('1600 Amphitheatre Parkway, Mountain View, CA')
+
+				expect(s).not_to be_nil
+			end
+
+			it "should get Correct GeoCodes" do
+				address = GeocodeAddress('9 Ross Haven Way Southeast, Medicine Hat, AB T1B 2T8, Canada')
+
+				lat = JSON.parse(address)['results'][0]['geometry']['location']['lat']
+				lng = JSON.parse(address)['results'][0]['geometry']['location']['lng']
+
+				expect(lat).to eq(50.0018813)
+				expect(lng).to eq(-110.6368152) 
+			end
 		end
 
 	end
