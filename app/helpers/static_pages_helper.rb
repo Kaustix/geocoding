@@ -22,7 +22,7 @@ module StaticPagesHelper
 
 		addressArray.each do |address|
 			geoAddress = GeocodeAddress(address)
-			if (IsRoofTopAddress(geoAddress))
+			if (IsActualAddress(geoAddress) && IsRoofTopAddress(geoAddress))
 				results << Geocode.new(address, 
 									   GetLatitude(geoAddress), 
 									   GetLongitude(geoAddress))
@@ -38,16 +38,23 @@ module StaticPagesHelper
 		response = Net::HTTP.get(uri)
 	end
 
-	def IsRoofTopAddress(address)
-		return nil if address.blank?
+	def IsActualAddress(address)
+		return false if address.blank?
 
 		jsonAddress = JSON.parse(address)
 
-		begin
-			return (jsonAddress['results'][0]['geometry']['location_type'] == "ROOFTOP")
-		rescue
+		if (jsonAddress['results'].length > 1) 
 			return false
-		end			
+		end
+		
+		return !jsonAddress['results'][0].nil?
+	end
+
+	def IsRoofTopAddress(address)
+		return false if address.blank?
+
+		jsonAddress = JSON.parse(address)
+		return (jsonAddress['results'][0]['geometry']['location_type'] == "ROOFTOP")			
 	end
 
 	def GetLatitude(geocode)

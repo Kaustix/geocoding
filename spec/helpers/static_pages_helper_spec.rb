@@ -61,7 +61,23 @@ describe "StaticPagesHelper" do
 				expect(lng).to eq(-110.6368152) 
 			end
 
-			
+			it "should not return invalid addresses" do
+				address = GeocodeAddress("1183 Golden Cape, Chew, ME")
+
+				expect(IsActualAddress(address)).to be_false
+			end
+
+			it "should not return multiple addresses" do
+				address = GeocodeAddress("5370 Ash Street")
+
+				expect(IsActualAddress(address)).to be_false
+			end
+
+			it "should return valid addresses" do
+				address = GeocodeAddress("4675 Highway 27 North, Carrollton, GA")
+
+				expect(IsActualAddress(address)).to be_true
+			end
 		end
 
 	end
