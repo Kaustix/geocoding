@@ -2,4 +2,14 @@
 
 <div class="center hero-unit">
 	<h1>Geocode Addresses</h1>
+
+	<table class="table table-striped table-bordered">
+		<% @geoAddresses.each do |geo| %>
+		<tr>
+			<td><%= geo.address %></td>
+			<td><%= geo.lat %></td>
+			<td><%= geo.lng %></td>
+		</tr>
+		<%end%>
+	</table>
 </div>

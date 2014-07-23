@@ -60,6 +60,8 @@ describe "StaticPagesHelper" do
 				expect(lat).to eq(50.0018813)
 				expect(lng).to eq(-110.6368152) 
 			end
+
+			
 		end
 
 	end

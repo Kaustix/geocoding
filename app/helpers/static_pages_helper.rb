@@ -15,13 +15,17 @@ module StaticPagesHelper
 		return results
 	end
 
-	def GetGeoCodedAddresses(addressArray)
+	def GetGeoCodedAddresses(fileName)
+		addressArray = ImportCSV(fileName)
+
 		results = []
 
 		addressArray.each do |address|
 			geoAddress = GeocodeAddress(address)
 			if (IsRoofTopAddress(geoAddress))
-				results << geoAddress
+				results << Geocode.new(address, 
+									   GetLatitude(geoAddress), 
+									   GetLongitude(geoAddress))
 			end
 		end
 
@@ -35,9 +39,29 @@ module StaticPagesHelper
 	end
 
 	def IsRoofTopAddress(address)
+		return nil if address.blank?
+
 		jsonAddress = JSON.parse(address)
 
-		return (jsonAddress['results'][0]['geometry']['location_type'].to_s == "ROOFTOP")
+		begin
+			return (jsonAddress['results'][0]['geometry']['location_type'] == "ROOFTOP")
+		rescue
+			return false
+		end			
+	end
+
+	def GetLatitude(geocode)
+		return nil if geocode.blank?
+
+		jsonAddress = JSON.parse(geocode)
+		return jsonAddress['results'][0]['geometry']['location']['lat']
+	end
+
+	def GetLongitude(geocode)
+		return nil if geocode.blank?
+
+		jsonAddress = JSON.parse(geocode)
+		return jsonAddress['results'][0]['geometry']['location']['lng']
 	end
 
 end
